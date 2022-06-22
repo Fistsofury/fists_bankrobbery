@@ -26,8 +26,8 @@ Citizen.CreateThread(function() --Rhodes starting location
 	end
 end)
 
-RegisterNetEvent('mushy_robbery:info')
-AddEventHandler('mushy_robbery:info', function()	
+RegisterNetEvent('fists_robbery:info')
+AddEventHandler('fists_robbery:info', function()	
     while true do
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
@@ -39,15 +39,15 @@ AddEventHandler('mushy_robbery:info', function()
             started = true
 		    maksettu = true 
             isRobbing = true        
-			TriggerServerEvent("mushy_robbery:pay", function()                
+			TriggerServerEvent("fists_robbery:pay", function()                
 			end)
 			end
 		end
 	end
 end)
 
-RegisterNetEvent('mushy_robbery:go')
-AddEventHandler('mushy_robbery:go', function()	
+RegisterNetEvent('fists_robbery:go')
+AddEventHandler('fists_robbery:go', function()	
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
 	if started == true then
@@ -88,7 +88,7 @@ Citizen.CreateThread(function()
 		if betweencoords < 2.0 and isRobbing == true then
 				DrawTxt(Config.rob, 0.50, 0.95, 0.7, 0.7, true, 255, 255, 255, 255, true)
 				if IsControlJustReleased(0, 0x760A9C6F) then
-				TriggerServerEvent("mushy_robbery:startrobbery", function()          
+				TriggerServerEvent("fists_robbery:startrobbery", function()          
 				end)
 				Citizen.Wait(2000)
 			end
@@ -101,8 +101,8 @@ AddEventHandler('marshal_rob:endprompt', function()
 	isRobbing = false
 end)
 
-RegisterNetEvent('mushy_robbery:startAnimation2')
-AddEventHandler('mushy_robbery:startAnimation2', function()	
+RegisterNetEvent('fists_robbery:startAnimation2')
+AddEventHandler('fists_robbery:startAnimation2', function()	
 	local _source = source
 	local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
@@ -124,14 +124,14 @@ AddEventHandler('mushy_robbery:startAnimation2', function()
     end
     if testplayer4 == 100 then   
 	BlowDynamite()
-    TriggerServerEvent("mushy_robbery:loot", function()
+    TriggerServerEvent("fists_robbery:loot", function()
     maksettu = false 
     started = true
     Blowedynamite = true                
     end)                
 	else
 	Wait(1000)
-	TriggerEvent('mushy_robbery:startAnimation2')
+	TriggerEvent('fists_robbery:startAnimation2')
     --Blowedynamite = false 
     --isRobbing = false
    -- speaked = false
@@ -143,8 +143,8 @@ AddEventHandler('mushy_robbery:startAnimation2', function()
     end        
 end)
 
-RegisterNetEvent('mushy_robbery:loot2')
-AddEventHandler('mushy_robbery:loot2', function()	
+RegisterNetEvent('fists_robbery:loot2')
+AddEventHandler('fists_robbery:loot2', function()	
 	while true do
 		Citizen.Wait(0)
         local _source = source    
@@ -165,7 +165,7 @@ AddEventHandler('mushy_robbery:loot2', function()
 			  Citizen.Wait(6000)
 	          ClearPedTasksImmediately(PlayerPedId())
 	          ClearPedSecondaryTask(PlayerPedId())
-	          TriggerServerEvent("mushy_robbery:payout", function()
+	          TriggerServerEvent("fists_robbery:payout", function()
               end)   
 			  FreezeEntityPosition(playerPed, false)         
 			end
