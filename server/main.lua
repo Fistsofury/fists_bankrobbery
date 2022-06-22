@@ -80,7 +80,7 @@ AddEventHandler("fists_robbery:startrobbery", function(robtime)
         VORP.subItem(_source,"dynamite", 1)
         isRobbing = false    
         TriggerClientEvent('fists_robbery:startAnimation2', _source)
-        TriggerClientEvent('marshal_rob:endprompt',_source)
+        TriggerClientEvent('fists_robbery:endprompt',_source)
         Wait(5000)
         TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs Have Been Alerted",6000)
     else   
@@ -96,17 +96,29 @@ AddEventHandler('fists_robbery:loot', function()
         
     if Blowedynamite == true then
     end        
-    TriggerClientEvent('fists_robbery:loot2', _source)    
+    TriggerClientEvent('fists_robbery:rhodesloot', _source)    
 end)
 
-RegisterNetEvent("fists_robbery:payout")
-AddEventHandler("fists_robbery:payout", function()
+RegisterNetEvent("fists_robbery:rhodespayout")
+AddEventHandler("fists_robbery:rhodespayout", function()
     TriggerEvent('vorp:getCharacter', source, function(user)
         local _source = source
         local _user = user
-        ritem = math.random(5,5)
-        local randomitempull = math.random(1, #Config.Items)
-        local itemName = Config.Items[randomitempull]
+        ritem = math.random(1,2)
+        local randomitempull = math.random(1, #Config.RhodesItems)
+        local itemName = Config.RhodesItems[randomitempull]
+           VORP.addItem(_source, itemName, ritem)
+    end)
+end)
+
+RegisterNetEvent("fists_robbery:valentinepayout")
+AddEventHandler("fists_robbery:valentinepayout", function()
+    TriggerEvent('vorp:getCharacter', source, function(user)
+        local _source = source
+        local _user = user
+        ritem = math.random(1,2)
+        local randomitempull = math.random(1, #Config.ValentineItems)
+        local itemName = Config.ValentineItems[randomitempull]
            VORP.addItem(_source, itemName, ritem)
     end)
 end)

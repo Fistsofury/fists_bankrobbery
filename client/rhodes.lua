@@ -26,8 +26,8 @@ Citizen.CreateThread(function() --Rhodes starting location
 	end
 end)
 
-RegisterNetEvent('fists_robbery:info')
-AddEventHandler('fists_robbery:info', function()	
+RegisterNetEvent('fists_robbery:rhodesinfo')
+AddEventHandler('fists_robbery:rhodesinfo', function()	
     while true do
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
@@ -46,8 +46,8 @@ AddEventHandler('fists_robbery:info', function()
 	end
 end)
 
-RegisterNetEvent('fists_robbery:go')
-AddEventHandler('fists_robbery:go', function()	
+RegisterNetEvent('fists_robbery:rhodesgo') -- Set GPS Function
+AddEventHandler('fists_robbery:rhodesgo', function()	
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
 	if started == true then
@@ -60,7 +60,7 @@ end)
 
 RegisterNetEvent("Witness:ToggleNotification2")
 AddEventHandler("Witness:ToggleNotification2", function(coords, alert)
-	--print('store name '..tostring(alert))
+)
 	TriggerEvent("vorp:TipBottom", 'Telegram of Robbery in Progress at ' .. alert, 15000)
 	local blip = Citizen.InvokeNative(0x45f13b7e0a15c880, -1282792512, coords.x, coords.y, coords.z, 50.0)
 	Wait(90000)--Time till notify blips dispears, 1 min
@@ -96,8 +96,8 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('marshal_rob:endprompt')
-AddEventHandler('marshal_rob:endprompt', function()	
+RegisterNetEvent('fists_robbery:endprompt')
+AddEventHandler('fists_robbery:endprompt', function()	
 	isRobbing = false
 end)
 
@@ -131,20 +131,12 @@ AddEventHandler('fists_robbery:startAnimation2', function()
     end)                
 	else
 	Wait(1000)
-	TriggerEvent('fists_robbery:startAnimation2')
-    --Blowedynamite = false 
-    --isRobbing = false
-   -- speaked = false
-    --started = false
-    --maksettu = false     
-	--Citizen.Wait(6000)
-	--ClearPedTasksImmediately(PlayerPedId())
-	--ClearPedSecondaryTask(PlayerPedId())            
+	TriggerEvent('fists_robbery:startAnimation2')          
     end        
 end)
 
-RegisterNetEvent('fists_robbery:loot2')
-AddEventHandler('fists_robbery:loot2', function()	
+RegisterNetEvent('fists_robbery:rhodesloot')
+AddEventHandler('fists_robbery:rhodesloot', function()	
 	while true do
 		Citizen.Wait(0)
         local _source = source    
@@ -165,7 +157,7 @@ AddEventHandler('fists_robbery:loot2', function()
 			  Citizen.Wait(6000)
 	          ClearPedTasksImmediately(PlayerPedId())
 	          ClearPedSecondaryTask(PlayerPedId())
-	          TriggerServerEvent("fists_robbery:payout", function()
+	          TriggerServerEvent("fists_robbery:rhodespayout", function()
               end)   
 			  FreezeEntityPosition(playerPed, false)         
 			end
@@ -203,7 +195,7 @@ function DrawTxt(text,x,y)
 end
 
 
-Citizen.CreateThread(function()
+Citizen.CreateThread(function() -- Create blip, checks config to make sure it set to true
 	if Config.BlipRhodes == true then
    local blip = N_0x554d9d53f696d002(1664425300,1589.78, -1838.80, 52.4)
     SetBlipSprite(blip, 90287351, 1)

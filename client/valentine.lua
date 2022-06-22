@@ -98,8 +98,8 @@ Citizen.CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('marshal_rob:endprompt')
-AddEventHandler('marshal_rob:endprompt', function()	
+RegisterNetEvent('fists_robbery:endprompt')
+AddEventHandler('fists_robbery:endprompt', function()	
 	isRobbing = false
 end)
 
@@ -145,8 +145,8 @@ AddEventHandler('fists_robbery:startAnimation2', function()
     end        
 end)
 
-RegisterNetEvent('fists_robbery:loot2')
-AddEventHandler('fists_robbery:loot2', function()	
+RegisterNetEvent('fists_robbery:valentineloot')
+AddEventHandler('fists_robbery:valentineloot', function()	
 	while true do
 		Citizen.Wait(0)
         local _source = source    
@@ -167,7 +167,7 @@ AddEventHandler('fists_robbery:loot2', function()
 			  Citizen.Wait(6000)
 	          ClearPedTasksImmediately(PlayerPedId())
 	          ClearPedSecondaryTask(PlayerPedId())
-	          TriggerServerEvent("fists_robbery:payout", function()
+	          TriggerServerEvent("fists_robbery:valentinepayout", function()
               end)   
 			  FreezeEntityPosition(playerPed, false)         
 			end
@@ -207,7 +207,7 @@ end
 
 Citizen.CreateThread(function()
 	if Config.BlipValentine == true then
-   local blip = N_0x554d9d53f696d002(1664425300,1589.78, -1838.80, 52.4)
+   local blip = N_0x554d9d53f696d002(1664425300,198.82, 1002.86, 189.04)
     SetBlipSprite(blip, 90287351, 1)
          Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Start Bank Heist")
 	
