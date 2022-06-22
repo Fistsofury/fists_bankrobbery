@@ -39,7 +39,7 @@ AddEventHandler('fists_robbery:rhodesinfo', function()
             started = true
 		    maksettu = true 
             isRobbing = true        
-			TriggerServerEvent("fists_robbery:pay", function()                
+			TriggerServerEvent("fists_robbery:rhodespay", function()                
 			end)
 			end
 		end
@@ -60,7 +60,7 @@ end)
 
 RegisterNetEvent("Witness:ToggleNotification2")
 AddEventHandler("Witness:ToggleNotification2", function(coords, alert)
-)
+
 	TriggerEvent("vorp:TipBottom", 'Telegram of Robbery in Progress at ' .. alert, 15000)
 	local blip = Citizen.InvokeNative(0x45f13b7e0a15c880, -1282792512, coords.x, coords.y, coords.z, 50.0)
 	Wait(90000)--Time till notify blips dispears, 1 min
@@ -88,7 +88,7 @@ Citizen.CreateThread(function()
 		if betweencoords < 2.0 and isRobbing == true then
 				DrawTxt(Config.rob, 0.50, 0.95, 0.7, 0.7, true, 255, 255, 255, 255, true)
 				if IsControlJustReleased(0, 0x760A9C6F) then
-				TriggerServerEvent("fists_robbery:startrobbery", function()          
+				TriggerServerEvent("fists_robbery:startrhodesrobbery", function()          
 				end)
 				Citizen.Wait(2000)
 			end
@@ -124,7 +124,7 @@ AddEventHandler('fists_robbery:startAnimation2', function()
     end
     if testplayer4 == 100 then   
 	BlowDynamite()
-    TriggerServerEvent("fists_robbery:loot", function()
+    TriggerServerEvent("fists_robbery:rhodesloot", function()
     maksettu = false 
     started = true
     Blowedynamite = true                
@@ -135,8 +135,8 @@ AddEventHandler('fists_robbery:startAnimation2', function()
     end        
 end)
 
-RegisterNetEvent('fists_robbery:rhodesloot')
-AddEventHandler('fists_robbery:rhodesloot', function()	
+RegisterNetEvent('fists_robbery:rhodesloot2')
+AddEventHandler('fists_robbery:rhodesloot2', function()	
 	while true do
 		Citizen.Wait(0)
         local _source = source    

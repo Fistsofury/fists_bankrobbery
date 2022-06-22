@@ -22,10 +22,10 @@ AddEventHandler('fists_robbery:rhodes', function()
 		Citizen.Wait(5000)
 		TriggerClientEvent("vorp:TipBottom", _source, "JOHN: You want to do this ? ", 5000)
 		Citizen.Wait(5000)
-		TriggerClientEvent('fists_robbery:info', _source)
+		TriggerClientEvent('fists_robbery:rhodesinfo', _source)
 end)
 
---[[ ########## Being worked on ##########
+ --########## Being worked on ##########
 RegisterServerEvent('fists_robbery:valentine')
 AddEventHandler('fists_robbery:valentine', function()
         local _source = source
@@ -36,9 +36,9 @@ AddEventHandler('fists_robbery:valentine', function()
 		Citizen.Wait(5000)
 		TriggerClientEvent("vorp:TipBottom", _source, "Buck: lets ride out ? ", 5000)
 		Citizen.Wait(5000)
-		TriggerClientEvent('fists_robbery:info', _source)
+		TriggerClientEvent('fists_robbery:valentineinfo', _source)
 end)
-
+--[[
 RegisterServerEvent('fists_robbery:valentine')
 AddEventHandler('fists_robbery:valentine', function()
         local _source = source
@@ -53,8 +53,8 @@ AddEventHandler('fists_robbery:valentine', function()
 end)]]
 
 
-RegisterServerEvent('fists_robbery:pay')
-AddEventHandler('fists_robbery:pay', function()
+RegisterServerEvent('fists_robbery:rhodespay')
+AddEventHandler('fists_robbery:rhodespay', function()
         local _source = source
         local Character = VorpCore.getUser(_source).getUsedCharacter
         u_money = Character.money
@@ -67,11 +67,30 @@ AddEventHandler('fists_robbery:pay', function()
     TriggerEvent("vorp:removeMoney", _source, 0, 0)
     TriggerClientEvent("vorp:TipBottom", _source, "JOHN: Now Go To Rhodes Bank!", 5000)
 	Citizen.Wait(1000)
-    TriggerClientEvent('fists_robbery:go', _source)    
+    TriggerClientEvent('fists_robbery:rhodesgo', _source)    
 end)
 
-RegisterNetEvent("fists_robbery:startrobbery")
-AddEventHandler("fists_robbery:startrobbery", function(robtime)
+
+-- #### Valentine ####
+RegisterServerEvent('fists_robbery:valentinepay')
+AddEventHandler('fists_robbery:valentinepay', function()
+        local _source = source
+        local Character = VorpCore.getUser(_source).getUsedCharacter
+        u_money = Character.money
+
+    if u_money <= 0 then
+        TriggerClientEvent("vorp:TipBottom", _source, "You have no money", 9000)
+        return
+    end
+
+    TriggerEvent("vorp:removeMoney", _source, 0, 0)
+    TriggerClientEvent("vorp:TipBottom", _source, "Buck: Now Go To Valentine Bank!", 5000)
+	Citizen.Wait(1000)
+    TriggerClientEvent('fists_robbery:valentinego', _source)    
+end)
+
+RegisterNetEvent("fists_robbery:startrhodesrobbery")
+AddEventHandler("fists_robbery:startrhodesrobbery", function(robtime)
     local _source = source
     local Character = VorpCore.getUser(source).getUsedCharacter
     local count = VORP.getItemCount(_source, "dynamite")
@@ -88,15 +107,35 @@ AddEventHandler("fists_robbery:startrobbery", function(robtime)
     end     
 end)
 
-RegisterServerEvent('fists_robbery:loot')
-AddEventHandler('fists_robbery:loot', function()
+
+-- #### Valentine ####
+RegisterNetEvent("fists_robbery:startvalentinerobbery")
+AddEventHandler("fists_robbery:startvalentinerobbery", function(robtime)
+    local _source = source
+    local Character = VorpCore.getUser(source).getUsedCharacter
+    local count = VORP.getItemCount(_source, "dynamite")
+
+    if count >= 1 then      
+        VORP.subItem(_source,"dynamite", 1)
+        isRobbing = false    
+        TriggerClientEvent('fists_robbery:startAnimation2', _source)
+        TriggerClientEvent('fists_robbery:endprompt',_source)
+        Wait(5000)
+        TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs Have Been Alerted",6000)
+    else   
+        TriggerClientEvent("vorp:TipBottom", _source, "You dont have a dynamite", 6000)
+    end     
+end)
+
+RegisterServerEvent('fists_robbery:rhodesloot')
+AddEventHandler('fists_robbery:rhodesloot', function()
     local _source = source
     local Character = VorpCore.getUser(_source).getUsedCharacter
     Blowedynamite = Blowedynamite    
         
     if Blowedynamite == true then
     end        
-    TriggerClientEvent('fists_robbery:rhodesloot', _source)    
+    TriggerClientEvent('fists_robbery:rhodesloot2', _source)    
 end)
 
 RegisterNetEvent("fists_robbery:rhodespayout")
