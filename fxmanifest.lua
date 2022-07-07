@@ -10,7 +10,8 @@ server_scripts {
 
 client_scripts {
 	'config.lua',
-	'client/rhodes.lua'
+	'client/rhodes.lua',
+	'client/valentine.lua'
 }
 
 exports {

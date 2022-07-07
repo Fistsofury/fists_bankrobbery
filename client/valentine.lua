@@ -1,11 +1,11 @@
-local robtime = 140 -- Time to rob (in seconds) now its 3.3mins
-local timerCount = robtime
-local isRobbing = false
-local speaked = false
-local started = false
-local maksettu = false
-local Blowedynamite = false
-local missionCompleted = false
+local robtimev = 140 -- Time to rob (in seconds) now its 3.3mins
+local timerCountv = robtimev
+local isRobbingv = false
+local speakedv = false
+local startedv = false
+local maksettuv = false
+local BlowedynamiteV = false
+local missionCompletedv = false
 
 
 Citizen.CreateThread(function() --Valentine starting location
@@ -14,11 +14,11 @@ Citizen.CreateThread(function() --Valentine starting location
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 		local betweencoords = GetDistanceBetweenCoords(coords,233.43, 991.45, 189.48, true)
-		if betweencoords < 2.0 and speaked == false then
+		if betweencoords < 2.0 and speakedv == false then
 			DrawTxt(" PRESS [~e~ENTER~q~] TO START ", 0.50, 0.90, 0.7, 0.7, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0xC7B5340A) then
-				speaked = true
-                started = true    
+				speakedv = true
+                startedv = true    
 				TriggerServerEvent("fists_robbery:valentine", function() 
 			end)
 			end
@@ -33,12 +33,12 @@ AddEventHandler('fists_robbery:valentineinfo', function()
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 		local betweencoords = GetDistanceBetweenCoords(coords,233.43, 991.45, 189.48, true)
-		if betweencoords < 2.0 and maksettu == false and started == true then
+		if betweencoords < 2.0 and maksettuv == false and startedv == true then
 			DrawTxt(" PRESS [~e~ENTER~q~] ACCEPT ", 0.50, 0.90, 0.7, 0.7, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0xC7B5340A) then
-            started = true
-		    maksettu = true 
-            isRobbing = true        
+            startedv = true
+		    maksettuv = true 
+            isRobbingv = true        
 			TriggerServerEvent("fists_robbery:valentinepay", function()                
 			end)
 			end
@@ -50,7 +50,7 @@ RegisterNetEvent('fists_robbery:valentinego') -- Set GPS Function
 AddEventHandler('fists_robbery:valentinego', function()	
     local ped = PlayerPedId()
     local coords = GetEntityCoords(ped)
-	if started == true then
+	if startedv == true then
 		DrawTxt("", 0.50, 0.50, 0.7, 0.7, true, 255, 255, 255, 255, true)
 		Citizen.InvokeNative(0x3D3D15AF7BCAAF83, 6, true, true)
 		Citizen.InvokeNative(0x64C59DD6834FA942, -309.14, 789.23, 117.67)
@@ -85,7 +85,7 @@ Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 		local betweencoords = GetDistanceBetweenCoords(coords,-310.31, 775.43, 118.80, true) -- marker location for prompt
-		if betweencoords < 2.0 and isRobbing == true then
+		if betweencoords < 2.0 and isRobbingv == true then
 				DrawTxt(Config.rob, 0.50, 0.95, 0.7, 0.7, true, 255, 255, 255, 255, true)
 				if IsControlJustReleased(0, 0x760A9C6F) then
 				TriggerServerEvent("fists_robbery:startvalentinerobbery", function()          
@@ -96,14 +96,14 @@ Citizen.CreateThread(function()
 	end
 end)
 
---[[ needs to be moved to functions
+--[[
 	RegisterNetEvent('fists_robbery:endprompt')
 AddEventHandler('fists_robbery:endprompt', function()	
 	isRobbing = false
-end)]]
-
-RegisterNetEvent('fists_robbery:startAnimation2')
-AddEventHandler('fists_robbery:startAnimation2', function()	
+end)
+]]
+RegisterNetEvent('fists_robbery:startvalentineAnimation2')
+AddEventHandler('fists_robbery:startvalentineAnimation2', function()	
 	local _source = source
 	local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
@@ -124,11 +124,11 @@ AddEventHandler('fists_robbery:startAnimation2', function()
     testplayer4 = exports["syn_minigame"]:taskBar(2900,7)
     end
     if testplayer4 == 100 then   
-	BlowDynamite()
+	BlowDynamiteV()
     TriggerServerEvent("fists_robbery:valentineloot", function()
-    maksettu = false 
-    started = true
-    Blowedynamite = true                
+    maksettuv = false 
+    startedv = true
+    BlowedynamiteV = true                
     end)                
 	else
 	Wait(1000)
@@ -144,21 +144,21 @@ AddEventHandler('fists_robbery:valentineloot2', function()
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 		local betweencoords = GetDistanceBetweenCoords(coords,-310.31, 775.43, 118.80, true) -- actual loot prompt
-		if betweencoords < 2.0 and Blowedynamite == true then
+		if betweencoords < 2.0 and BlowedynamiteV == true then
 			DrawTxt("Press [~e~ENTER~q~] to take loot", 0.50, 0.90, 0.7, 0.7, true, 255, 255, 255, 255, true)
 			if IsControlJustReleased(0, 0xC7B5340A) then
 			 FreezeEntityPosition(playerPed, true)
               TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_CROUCH_INSPECT'), Config.LockpickTime, true, false, false, false)
 	          exports['progressBars']:startUI(Config.LockpickTime, "Getting The Loot...")     
-              Blowedynamite = false 
-              isRobbing = false
-              speaked = false
-              started = false
-              maksettu = false     
+              BlowedynamiteV = false 
+              isRobbingv = false
+              speakedv = false
+              startedv = false
+              maksettuv = false     
 			  Citizen.Wait(6000)
 	          ClearPedTasksImmediately(PlayerPedId())
 	          ClearPedSecondaryTask(PlayerPedId())
-	          TriggerServerEvent("fists_robbery:rhodespayout", function()
+	          TriggerServerEvent("fists_robbery:valentineloot", function()
               end)   
 			  FreezeEntityPosition(playerPed, false)         
 			end
@@ -197,7 +197,7 @@ end
 
 
 Citizen.CreateThread(function() -- Create blip, checks config to make sure it set to true
-	if Config.BlipRhodes == true then
+	if Config.BlipValentine == true then
    local blip = N_0x554d9d53f696d002(1664425300,233.43, 991.45, 189.48)
     SetBlipSprite(blip, 90287351, 1)
          Citizen.InvokeNative(0x9CB1A1623062F402, blip, "Start Bank Heist")
@@ -205,7 +205,7 @@ Citizen.CreateThread(function() -- Create blip, checks config to make sure it se
  	end
 end)
 
-function BlowDynamite()
+function BlowDynamiteV()
 			
 	local playerPed = PlayerPedId()
 	local x,y,z = table.unpack(GetEntityCoords(PlayerPedId()))
@@ -231,7 +231,7 @@ function BlowDynamite()
 	Citizen.Wait(35000)
 			
 	AddExplosion(-310.31, 775.43, 118.80, 25 , 5000.0 ,true , false , 27)
-	Blowedynamite = true
+	BlowedynamiteV = true
 	local playerPed2 = PlayerPedId()
     local coords = GetEntityCoords(playerPed2)        
 	

@@ -118,7 +118,7 @@ AddEventHandler("fists_robbery:startvalentinerobbery", function(robtime)
     if count >= 1 then      
         VORP.subItem(_source,"dynamite", 1)
         isRobbing = false    
-        TriggerClientEvent('fists_robbery:startAnimation2', _source)
+        TriggerClientEvent('fists_robbery:startvalentineAnimation2', _source)
         TriggerClientEvent('fists_robbery:endprompt',_source)
         Wait(5000)
         TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs Have Been Alerted",6000)
@@ -136,6 +136,17 @@ AddEventHandler('fists_robbery:rhodesloot', function()
     if Blowedynamite == true then
     end        
     TriggerClientEvent('fists_robbery:rhodesloot2', _source)    
+end)
+
+RegisterServerEvent('fists_robbery:valentineloot')
+AddEventHandler('fists_robbery:valentineloot', function()
+    local _source = source
+    local Character = VorpCore.getUser(_source).getUsedCharacter
+    BlowedynamiteV = BlowedynamiteV    
+        
+    if BlowedynamiteV == true then
+    end        
+    TriggerClientEvent('fists_robbery:valentineloot2', _source)    
 end)
 
 RegisterNetEvent("fists_robbery:rhodespayout")
