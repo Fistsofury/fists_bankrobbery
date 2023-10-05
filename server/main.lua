@@ -72,7 +72,7 @@ end)
 
 
 -- #### Valentine ####
-RegisterServerEvent('fists_robbery:valentinepay')
+--[[RegisterServerEvent('fists_robbery:valentinepay')
 AddEventHandler('fists_robbery:valentinepay', function()
         local _source = source
         local Character = VorpCore.getUser(_source).getUsedCharacter
@@ -87,29 +87,35 @@ AddEventHandler('fists_robbery:valentinepay', function()
     TriggerClientEvent("vorp:TipBottom", _source, "Buck: Now Go To Valentine Bank!", 5000)
 	Citizen.Wait(1000)
     TriggerClientEvent('fists_robbery:valentinego', _source)    
-end)
+end) --]]
 
 RegisterNetEvent("fists_robbery:startrhodesrobbery")
-AddEventHandler("fists_robbery:startrhodesrobbery", function(robtime)
+AddEventHandler("fists_robbery:startrhodesrobbery", function()
     local _source = source
     local Character = VorpCore.getUser(source).getUsedCharacter
-    local count = VORP.getItemCount(_source, "dynamite")
-
-    if count >= 1 then      
-        VORP.subItem(_source,"dynamite", 1)
-        isRobbing = false    
-        TriggerClientEvent('fists_robbery:startAnimation2', _source)
-        TriggerClientEvent('fists_robbery:endprompt',_source)
-        Wait(5000)
-        TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs Have Been Alerted",6000)
-    else   
-        TriggerClientEvent("vorp:TipBottom", _source, "You dont have a dynamite", 6000)
-    end     
+    local locationName = "rhodes"  -- Set the location name based on your configuration
+    
+    if Character.job == 'police' or Character.job == 'marshal' or Character.job == 'sheriff' then
+        TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs are already alerted", 5000)
+    else
+        local count = VORP.getItemCount(_source, "dynamite")
+        if count >= 1 then
+            VORP.subItem(_source, "dynamite", 1)
+            isRobbing = false
+            TriggerClientEvent('fists_robbery:startAnimation2', _source, locationName)
+            TriggerClientEvent('fists_robbery:endprompt', _source)
+            Wait(5000)
+            TriggerEvent("policenotify", Config.Locations[locationName].PoliceNotifyPlayers, Config.Locations[locationName].Coords, Config.Locations[locationName].PoliceAlert)
+        else
+            TriggerClientEvent("vorp:TipBottom", _source, "You don't have dynamite", 6000)
+        end
+    end
 end)
+
 
 
 -- #### Valentine ####
-RegisterNetEvent("fists_robbery:startvalentinerobbery")
+--[[RegisterNetEvent("fists_robbery:startvalentinerobbery")
 AddEventHandler("fists_robbery:startvalentinerobbery", function(robtime)
     local _source = source
     local Character = VorpCore.getUser(source).getUsedCharacter
@@ -125,20 +131,20 @@ AddEventHandler("fists_robbery:startvalentinerobbery", function(robtime)
     else   
         TriggerClientEvent("vorp:TipBottom", _source, "You dont have a dynamite", 6000)
     end     
-end)
+end)--]]
 
 RegisterServerEvent('fists_robbery:rhodesloot')
 AddEventHandler('fists_robbery:rhodesloot', function()
     local _source = source
     local Character = VorpCore.getUser(_source).getUsedCharacter
-    Blowedynamite = Blowedynamite    
-        
-    if Blowedynamite == true then
-    end        
-    TriggerClientEvent('fists_robbery:rhodesloot2', _source)    
+    local locationName = "rhodes"  -- Set the location name based on your configuration
+    
+    if Blowedynamite and Config.Locations[locationName].CanRobLoot then
+        TriggerClientEvent('fists_robbery:rhodesloot2', _source, locationName)
+    end
 end)
 
-RegisterServerEvent('fists_robbery:valentineloot')
+--[[RegisterServerEvent('fists_robbery:valentineloot')
 AddEventHandler('fists_robbery:valentineloot', function()
     local _source = source
     local Character = VorpCore.getUser(_source).getUsedCharacter
@@ -147,21 +153,28 @@ AddEventHandler('fists_robbery:valentineloot', function()
     if BlowedynamiteV == true then
     end        
     TriggerClientEvent('fists_robbery:valentineloot2', _source)    
-end)
+end) --]]
 
 RegisterNetEvent("fists_robbery:rhodespayout")
 AddEventHandler("fists_robbery:rhodespayout", function()
-    TriggerEvent('vorp:getCharacter', source, function(user)
-        local _source = source
-        local _user = user
-        ritem = math.random(1,2)
-        local randomitempull = math.random(1, #Config.RhodesItems)
-        local itemName = Config.RhodesItems[randomitempull]
-           VORP.addItem(_source, itemName, ritem)
-    end)
+    local _source = source
+    local Character = VorpCore.getUser(_source).getUsedCharacter
+    local locationName = "rhodes"  -- Set the location name based on your configuration
+    
+    if Blowedynamite then
+        TriggerEvent('vorp:getCharacter', _source, function(user)
+            local _source = source
+            local _user = user
+            ritem = math.random(1, 2)
+            local randomitempull = math.random(1, #Config.Locations[locationName].Items)
+            local itemName = Config.Locations[locationName].Items[randomitempull]
+            VORP.addItem(_source, itemName, ritem)
+        end)
+    end
 end)
 
-RegisterNetEvent("fists_robbery:valentinepayout")
+
+--[[RegisterNetEvent("fists_robbery:valentinepayout")
 AddEventHandler("fists_robbery:valentinepayout", function()
     TriggerEvent('vorp:getCharacter', source, function(user)
         local _source = source
@@ -171,7 +184,7 @@ AddEventHandler("fists_robbery:valentinepayout", function()
         local itemName = Config.ValentineItems[randomitempull]
            VORP.addItem(_source, itemName, ritem)
     end)
-end)
+end)--]]
 
 
 
