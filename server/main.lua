@@ -1,19 +1,10 @@
-VORP = exports.vorp_inventory:vorp_inventoryApi()
-
-data = {}
-TriggerEvent("vorp_inventory:getData",function(call)
-    data = call
+VORPcore = {}
+TriggerEvent("getCore", function(core)
+    VORPcore = core
 end)
 
-local VorpCore = {}
-
-TriggerEvent("getCore",function(core)
-    VorpCore = core
-end)
-
-
-RegisterServerEvent('fists_robbery:rhodes')
-AddEventHandler('fists_robbery:rhodes', function()
+RegisterServerEvent('fists_robbery:bank')
+AddEventHandler('fists_robbery:bank', function()
         local _source = source
         local Character = VorpCore.getUser(_source).getUsedCharacter
         TriggerClientEvent("vorp:TipBottom", _source, "JOHN: I have a job for you ", 5000)
@@ -22,42 +13,16 @@ AddEventHandler('fists_robbery:rhodes', function()
 		Citizen.Wait(5000)
 		TriggerClientEvent("vorp:TipBottom", _source, "JOHN: You want to do this ? ", 5000)
 		Citizen.Wait(5000)
-		TriggerClientEvent('fists_robbery:rhodesinfo', _source)
+		TriggerClientEvent('fists_robbery:bankinfo', _source)
 end)
 
- --########## Being worked on ##########
-RegisterServerEvent('fists_robbery:valentine')
-AddEventHandler('fists_robbery:valentine', function()
-        local _source = source
-        local Character = VorpCore.getUser(_source).getUsedCharacter
-        TriggerClientEvent("vorp:TipBottom", _source, "Buck: I have special job a job for you ", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent("vorp:TipBottom", _source, "Buck: I hope you have you the dynamite", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent("vorp:TipBottom", _source, "Buck: lets ride out ? ", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent('fists_robbery:valentineinfo', _source)
-end)
---[[
-RegisterServerEvent('fists_robbery:valentine')
-AddEventHandler('fists_robbery:valentine', function()
-        local _source = source
-        local Character = VorpCore.getUser(_source).getUsedCharacter
-        TriggerClientEvent("vorp:TipBottom", _source, "Buck: I have special job a job for you ", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent("vorp:TipBottom", _source, "Buck: I hope you have you the dynamite", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent("vorp:TipBottom", _source, "Buck: lets ride out ? ", 5000)
-		Citizen.Wait(5000)
-		TriggerClientEvent('fists_robbery:info', _source)
-end)]]
 
-
-RegisterServerEvent('fists_robbery:rhodespay')
-AddEventHandler('fists_robbery:rhodespay', function()
+RegisterServerEvent('fists_robbery:bankpay')
+AddEventHandler('fists_robbery:bankpay', function()
         local _source = source
         local Character = VorpCore.getUser(_source).getUsedCharacter
-        u_money = Character.money
+        u_money = exports.VorpCore:char_money
+        
 
     if u_money <= 0 then
         TriggerClientEvent("vorp:TipBottom", _source, "You have no money", 9000)
@@ -67,36 +32,18 @@ AddEventHandler('fists_robbery:rhodespay', function()
     TriggerEvent("vorp:removeMoney", _source, 0, 0)
     TriggerClientEvent("vorp:TipBottom", _source, "JOHN: Now Go To Rhodes Bank!", 5000)
 	Citizen.Wait(1000)
-    TriggerClientEvent('fists_robbery:rhodesgo', _source)    
+    TriggerClientEvent('fists_robbery:bankgo', _source)    
 end)
 
 
--- #### Valentine ####
-RegisterServerEvent('fists_robbery:valentinepay')
-AddEventHandler('fists_robbery:valentinepay', function()
-        local _source = source
-        local Character = VorpCore.getUser(_source).getUsedCharacter
-        u_money = Character.money
-
-    if u_money <= 0 then
-        TriggerClientEvent("vorp:TipBottom", _source, "You have no money", 9000)
-        return
-    end
-
-    TriggerEvent("vorp:removeMoney", _source, 0, 0)
-    TriggerClientEvent("vorp:TipBottom", _source, "Buck: Now Go To Valentine Bank!", 5000)
-	Citizen.Wait(1000)
-    TriggerClientEvent('fists_robbery:valentinego', _source)    
-end)
-
-RegisterNetEvent("fists_robbery:startrhodesrobbery")
-AddEventHandler("fists_robbery:startrhodesrobbery", function(robtime)
+RegisterNetEvent("fists_robbery:startbankrobbery")
+AddEventHandler("fists_robbery:startbankrobbery", function(robtime)
     local _source = source
     local Character = VorpCore.getUser(source).getUsedCharacter
-    local count = VORP.getItemCount(_source, "dynamite")
+    local count = exports.vorp_inventory:getItemCount(source, "dynamite")
 
     if count >= 1 then      
-        VORP.subItem(_source,"dynamite", 1)
+        exports.vorp_inventory:exports.vorp_inventory:subItem(source, "dynamite", 1, nil)
         isRobbing = false    
         TriggerClientEvent('fists_robbery:startAnimation2', _source)
         TriggerClientEvent('fists_robbery:endprompt',_source)
@@ -108,71 +55,29 @@ AddEventHandler("fists_robbery:startrhodesrobbery", function(robtime)
 end)
 
 
--- #### Valentine ####
-RegisterNetEvent("fists_robbery:startvalentinerobbery")
-AddEventHandler("fists_robbery:startvalentinerobbery", function(robtime)
-    local _source = source
-    local Character = VorpCore.getUser(source).getUsedCharacter
-    local count = VORP.getItemCount(_source, "dynamite")
-
-    if count >= 1 then      
-        VORP.subItem(_source,"dynamite", 1)
-        isRobbing = false    
-        TriggerClientEvent('fists_robbery:startvalentineAnimation2', _source)
-        TriggerClientEvent('fists_robbery:endprompt',_source)
-        Wait(5000)
-        TriggerClientEvent("vorp:TipBottom", _source, "Sheriffs Have Been Alerted",6000)
-    else   
-        TriggerClientEvent("vorp:TipBottom", _source, "You dont have a dynamite", 6000)
-    end     
-end)
-
-RegisterServerEvent('fists_robbery:rhodesloot')
-AddEventHandler('fists_robbery:rhodesloot', function()
+RegisterServerEvent('fists_robbery:bankloot')
+AddEventHandler('fists_robbery:bankloot', function()
     local _source = source
     local Character = VorpCore.getUser(_source).getUsedCharacter
     Blowedynamite = Blowedynamite    
         
     if Blowedynamite == true then
     end        
-    TriggerClientEvent('fists_robbery:rhodesloot2', _source)    
+    TriggerClientEvent('fists_robbery:bankloot2', _source)    
 end)
 
-RegisterServerEvent('fists_robbery:valentineloot')
-AddEventHandler('fists_robbery:valentineloot', function()
-    local _source = source
-    local Character = VorpCore.getUser(_source).getUsedCharacter
-    BlowedynamiteV = BlowedynamiteV    
-        
-    if BlowedynamiteV == true then
-    end        
-    TriggerClientEvent('fists_robbery:valentineloot2', _source)    
-end)
-
-RegisterNetEvent("fists_robbery:rhodespayout")
-AddEventHandler("fists_robbery:rhodespayout", function()
+RegisterNetEvent("fists_robbery:bankpayout")
+AddEventHandler("fists_robbery:bankpayout", function()
     TriggerEvent('vorp:getCharacter', source, function(user)
         local _source = source
         local _user = user
         ritem = math.random(1,2)
-        local randomitempull = math.random(1, #Config.RhodesItems)
-        local itemName = Config.RhodesItems[randomitempull]
-           VORP.addItem(_source, itemName, ritem)
+        local randomitempull = math.random(1, #Config.bankItems)
+        local itemName = Config.bankItems[randomitempull]
+           exports.vorp_inventory:exports.vorp_inventory:addItem(source, itemName, ritem, nil)
+           
     end)
 end)
-
-RegisterNetEvent("fists_robbery:valentinepayout")
-AddEventHandler("fists_robbery:valentinepayout", function()
-    TriggerEvent('vorp:getCharacter', source, function(user)
-        local _source = source
-        local _user = user
-        ritem = math.random(1,2)
-        local randomitempull = math.random(1, #Config.ValentineItems)
-        local itemName = Config.ValentineItems[randomitempull]
-           VORP.addItem(_source, itemName, ritem)
-    end)
-end)
-
 
 
 RegisterNetEvent("policenotify")
