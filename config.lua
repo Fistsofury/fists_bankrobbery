@@ -36,5 +36,3 @@ Config = {
 }
 
 
-exports.VorpCore:character.removeCurrency()
-
